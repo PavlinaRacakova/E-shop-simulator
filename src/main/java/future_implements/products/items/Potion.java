@@ -1,4 +1,4 @@
-package pavlina.EShop.entities.items;
+package future_implements.products.items;
 
 import lombok.Getter;
 

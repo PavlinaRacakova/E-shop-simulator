@@ -1,4 +1,4 @@
-package pavlina.EShop.entities.animals;
+package future_implements.products.animals;
 
 import lombok.Getter;
 import lombok.Setter;
