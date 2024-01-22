@@ -26,4 +26,12 @@ public class ProductService {
     public List<Product> findAllProductsMoreExpensiveThan(int price) {
         return repository.findByPriceGreaterThanEqual(price);
     }
+
+    public Product findProductById(int id) {
+        return repository.findById(id).orElseThrow();
+    }
+
+    public List<Product> findAllProductsThatArentSold() {
+        return repository.findAllByOrderIsNotNull();
+    }
 }

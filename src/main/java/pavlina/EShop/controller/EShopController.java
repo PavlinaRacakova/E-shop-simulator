@@ -21,27 +21,32 @@ public class EShopController {
     }
 
     @GetMapping("/all-products")
-    public List<Product> findAllProducts() {
+    public List<Product> getAllProducts() {
         return productService.findAllProducts();
     }
 
+    @GetMapping("/all-available-products")
+    public List<Product> getAllAvailableProducts() {
+        return productService.findAllProductsThatArentSold();
+    }
+
     @GetMapping("/all-products-cheaper-than-{price}")
-    public List<Product> findAllProductsCheaperThan(@PathVariable int price) {
+    public List<Product> getAllProductsCheaperThan(@PathVariable int price) {
         return productService.findAllProductsCheaperThan(price);
     }
 
     @GetMapping("/all-products-more-expensive-than-{price}")
-    public List<Product> findAllProductsMoreExpensiveThan(@PathVariable int price) {
+    public List<Product> getAllProductsMoreExpensiveThan(@PathVariable int price) {
         return productService.findAllProductsMoreExpensiveThan(price);
     }
 
     @GetMapping("/all-orders")
-    public List<Order> findAllOrders() {
+    public List<Order> getAllOrders() {
         return orderService.findAllOrders();
     }
 
     @GetMapping("/all-orders-made-on-{day}")
-    public List<Order> findAllOrdersBySpecifiedLocalDate(@PathVariable LocalDate day) {
+    public List<Order> getAllOrdersBySpecifiedLocalDate(@PathVariable LocalDate day) {
         return orderService.findByCreationDate(day);
     }
 }

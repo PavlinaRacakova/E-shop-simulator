@@ -12,4 +12,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<Product> findByPriceLessThanEqual(int price);
 
     List<Product> findByPriceGreaterThanEqual(int price);
+
+    List<Product> findAllByOrderIsNotNull();
 }
