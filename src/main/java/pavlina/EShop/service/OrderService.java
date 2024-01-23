@@ -2,6 +2,8 @@ package pavlina.EShop.service;
 
 import org.springframework.stereotype.Service;
 import pavlina.EShop.entities.order.Order;
+import pavlina.EShop.exception_handling.exceptions.DatabaseEmptyException;
+import pavlina.EShop.exception_handling.exceptions.OrderNotFoundException;
 import pavlina.EShop.repository.OrderRepository;
 
 import java.time.LocalDate;
@@ -17,10 +19,20 @@ public class OrderService {
     }
 
     public List<Order> findAllOrders() {
-        return repository.findAll();
+        List<Order> orders = repository.findAll();
+        if (!orders.isEmpty()) {
+            return orders;
+        } else {
+            throw new DatabaseEmptyException();
+        }
     }
 
     public List<Order> findByCreationDate(LocalDate localDate) {
-        return repository.findByCreationDate(localDate);
+        List<Order> orders = repository.findByCreationDate(localDate);
+        if (!orders.isEmpty()) {
+            return orders;
+        } else {
+            throw new OrderNotFoundException();
+        }
     }
 }
