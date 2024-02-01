@@ -1,5 +1,6 @@
 package pavlina.EShop.service;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import pavlina.EShop.entities.product.Product;
 import pavlina.EShop.exception_handling.exceptions.DatabaseEmptyException;
@@ -56,5 +57,10 @@ public class ProductService {
         } else {
             throw new ProductNotFoundException();
         }
+    }
+
+    public ResponseEntity<?> saveNewProduct(Product product) {
+        repository.save(product);
+        return ResponseEntity.ok().body("New product successfully added");
     }
 }
