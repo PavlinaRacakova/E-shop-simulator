@@ -3,6 +3,7 @@ package pavlina.EShop.exception_handling;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import pavlina.EShop.exception_handling.exceptions.CartEmptyException;
 import pavlina.EShop.exception_handling.exceptions.DatabaseEmptyException;
 import pavlina.EShop.exception_handling.exceptions.OrderNotFoundException;
 import pavlina.EShop.exception_handling.exceptions.ProductNotFoundException;
@@ -26,6 +27,11 @@ public class EshopExceptionHandler {
 
     @ExceptionHandler(OrderNotFoundException.class)
     public ResponseEntity<?> handleMissingOrders(OrderNotFoundException exception) {
+        return ResponseEntity.badRequest().body(exception.getMessage());
+    }
+
+    @ExceptionHandler(CartEmptyException.class)
+    public ResponseEntity<?> handleEmptyCart(CartEmptyException exception) {
         return ResponseEntity.badRequest().body(exception.getMessage());
     }
 }

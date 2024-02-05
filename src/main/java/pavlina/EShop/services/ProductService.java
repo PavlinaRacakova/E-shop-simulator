@@ -1,16 +1,17 @@
-package pavlina.EShop.service;
+package pavlina.EShop.services;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import pavlina.EShop.entities.order.Order;
 import pavlina.EShop.entities.product.Product;
 import pavlina.EShop.exception_handling.exceptions.DatabaseEmptyException;
 import pavlina.EShop.exception_handling.exceptions.ProductNotFoundException;
-import pavlina.EShop.repository.ProductRepository;
+import pavlina.EShop.repositories.ProductRepository;
 
 import java.util.List;
 
 /**
- * Product service class
+ * Service class for product controller
  */
 @Service
 public class ProductService {
@@ -65,5 +66,12 @@ public class ProductService {
     public ResponseEntity<?> saveNewProduct(Product product) {
         repository.save(product);
         return ResponseEntity.ok().body("New product successfully added");
+    }
+
+    public void markProductsAsSold(Order order, List<Product> productsInCart) {
+        for(Product product : productsInCart) {
+            product.setOrder(order);
+            repository.save(product);
+        }
     }
 }

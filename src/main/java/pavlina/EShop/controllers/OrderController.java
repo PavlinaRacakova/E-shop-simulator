@@ -1,11 +1,10 @@
-package pavlina.EShop.controller;
+package pavlina.EShop.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import pavlina.EShop.service.OrderService;
+import org.springframework.web.bind.annotation.*;
+import pavlina.EShop.entities.order.Order;
+import pavlina.EShop.services.OrderService;
 
 import java.time.LocalDate;
 
@@ -30,5 +29,10 @@ public class OrderController {
     @GetMapping("/made-on-{day}")
     public ResponseEntity<?> getAllOrdersBySpecifiedLocalDate(@PathVariable LocalDate day) {
         return ResponseEntity.ok().body(service.findByCreationDate(day));
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<?> createNewOrder(@RequestBody Order order, HttpSession session) {
+        return service.saveNewOrder(order, session);
     }
 }

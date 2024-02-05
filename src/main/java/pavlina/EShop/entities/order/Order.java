@@ -3,7 +3,6 @@ package pavlina.EShop.entities.order;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pavlina.EShop.entities.customer.Customer;
 import pavlina.EShop.entities.product.Product;
@@ -15,7 +14,6 @@ import java.util.List;
 @Table(name = "orders")
 @Getter
 @Setter
-@NoArgsConstructor
 public class Order {
 
     @Id
@@ -40,10 +38,12 @@ public class Order {
 
     private int totalPrice;
 
-    public Order(Customer customer, List<Product> orderedProducts) {
-        this.customer = customer;
-        this.orderedProducts = orderedProducts;
+    public Order() {
         creationDate = LocalDate.now();
+    }
+
+    public void setOrderedProducts(List<Product> orderedProducts) {
+        this.orderedProducts = orderedProducts;
         totalPrice = orderedProducts.stream().mapToInt(Product::getPrice).sum();
     }
 }

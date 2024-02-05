@@ -1,4 +1,4 @@
-package pavlina.EShop.controller;
+package pavlina.EShop.controllers;
 
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -6,7 +6,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pavlina.EShop.entities.product.Product;
 import pavlina.EShop.exception_handling.exceptions.ValidationException;
-import pavlina.EShop.service.ProductService;
+import pavlina.EShop.services.ProductService;
 
 /**
  * Controller handling product related requests
@@ -46,7 +46,7 @@ public class ProductController {
         return ResponseEntity.ok().body(service.findProductById(id));
     }
 
-    @PostMapping(value = "/add")
+    @PostMapping("/add")
     public ResponseEntity<?> addNewProduct(@Valid @RequestBody Product product, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(new ValidationException(bindingResult));
