@@ -9,6 +9,9 @@ import pavlina.EShop.repository.OrderRepository;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Order service class
+ */
 @Service
 public class OrderService {
 

@@ -9,6 +9,9 @@ import pavlina.EShop.service.OrderService;
 
 import java.time.LocalDate;
 
+/**
+ * Controller handling order related requests
+ */
 @RestController
 @RequestMapping("/orders")
 public class OrderController {

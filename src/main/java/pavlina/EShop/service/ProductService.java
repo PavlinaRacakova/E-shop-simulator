@@ -9,6 +9,9 @@ import pavlina.EShop.repository.ProductRepository;
 
 import java.util.List;
 
+/**
+ * Product service class
+ */
 @Service
 public class ProductService {
 

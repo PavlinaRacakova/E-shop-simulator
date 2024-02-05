@@ -7,6 +7,9 @@ import pavlina.EShop.entities.order.Order;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Order repository
+ */
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer> {
 

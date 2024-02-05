@@ -8,6 +8,9 @@ import pavlina.EShop.entities.product.Product;
 import pavlina.EShop.exception_handling.exceptions.ValidationException;
 import pavlina.EShop.service.ProductService;
 
+/**
+ * Controller handling product related requests
+ */
 @RestController
 @RequestMapping("/products")
 public class ProductController {

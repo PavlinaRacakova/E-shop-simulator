@@ -8,6 +8,9 @@ import org.springframework.validation.BindingResult;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Exception that is returned when entity validation fails
+ */
 @Getter
 @JsonIgnoreProperties({"cause", "stackTrace", "message", "suppressed", "localizedMessage"})
 public class ValidationException extends RuntimeException {

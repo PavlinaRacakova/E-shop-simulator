@@ -6,6 +6,9 @@ import pavlina.EShop.entities.product.Product;
 
 import java.util.List;
 
+/**
+ * Product repository
+ */
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 

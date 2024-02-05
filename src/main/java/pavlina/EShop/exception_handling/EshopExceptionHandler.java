@@ -7,6 +7,10 @@ import pavlina.EShop.exception_handling.exceptions.DatabaseEmptyException;
 import pavlina.EShop.exception_handling.exceptions.OrderNotFoundException;
 import pavlina.EShop.exception_handling.exceptions.ProductNotFoundException;
 
+/**
+ * Exception Handler for all controllers
+ */
+
 @RestControllerAdvice
 public class EshopExceptionHandler {
 
