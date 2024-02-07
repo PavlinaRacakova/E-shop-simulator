@@ -1,5 +1,6 @@
 package pavlina.EShop.service;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import pavlina.EShop.domain.order.Order;
@@ -55,7 +56,7 @@ public class ProductService {
     }
 
     public List<Product> findAllProductsThatArentSold() {
-        List<Product> products =   repository.findAllByOrderIsNull();
+        List<Product> products =   repository.findAllByOrderIsNullAndSessionIdIsNull();
         if (!products.isEmpty()) {
             return products;
         } else {
@@ -72,6 +73,20 @@ public class ProductService {
         for(Product product : productsInCart) {
             product.setOrder(order);
             repository.save(product);
+        }
+    }
+
+    public void markProductAsReserved(Product product, HttpSession session) {
+        product.setSessionId(session.getId());
+        repository.save(product);
+    }
+
+    public void releaseProductsForExpiredSession(String sessionId) {
+        List<Product> productsToMarkAsAvailable = repository.findBySessionId(sessionId);
+
+        for(Product productToMarkAsAvailable : productsToMarkAsAvailable) {
+            productToMarkAsAvailable.setSessionId(null);
+            repository.save(productToMarkAsAvailable);
         }
     }
 }

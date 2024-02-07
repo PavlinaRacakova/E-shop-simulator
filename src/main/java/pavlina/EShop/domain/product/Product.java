@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.validator.constraints.Length;
 import pavlina.EShop.domain.order.Order;
 
@@ -32,21 +33,33 @@ public class Product {
     @Max(value = 1_000_000, message = "Price cannot be higher than 1.000.000")
     private int price;
 
+    //stores order id when product is ordered
     @ManyToOne
     @JoinColumn(name = "order_id")
     @JsonIgnore
     private Order order;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o;
-        return price == product.price && Objects.equals(id, product.id) && Objects.equals(name, product.name) && Objects.equals(order, product.order);
+    //stores session id when product is reserved in cart
+    @JsonIgnore
+    private String sessionId;
+
+    public boolean isAvailable() {
+        return order == null && sessionId == null;
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(id, name, price, order);
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        Product product = (Product) o;
+        return getId() != null && Objects.equals(getId(), product.getId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
 }

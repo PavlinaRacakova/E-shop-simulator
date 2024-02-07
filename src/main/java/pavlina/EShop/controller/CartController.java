@@ -1,12 +1,9 @@
-package pavlina.EShop.controllers;
+package pavlina.EShop.controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pavlina.EShop.entities.product.Product;
-import pavlina.EShop.services.CartService;
-
-import java.util.List;
+import pavlina.EShop.service.CartService;
 
 /**
  * Controller for cart related queries
@@ -26,13 +23,13 @@ public class CartController {
         return service.addToTheCart(productId, session);
     }
 
-    @GetMapping("/remove/{productId}")
+    @DeleteMapping("/delete/{productId}")
     public ResponseEntity<?> removeFromCart(@PathVariable int productId, HttpSession session) {
         return service.removeFromTheCart(productId, session);
     }
 
     @GetMapping("/items")
-    public List<Product> getAllItemsInCart(HttpSession session) {
-        return service.getAllItemsInCart(session);
+    public ResponseEntity<?> getAllItemsInCart(HttpSession session) {
+        return ResponseEntity.ok().body(service.getAllItemsAndTheirPrice(session));
     }
 }

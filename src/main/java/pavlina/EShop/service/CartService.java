@@ -1,10 +1,12 @@
-package pavlina.EShop.services;
+package pavlina.EShop.service;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import pavlina.EShop.entities.cart.Cart;
-import pavlina.EShop.entities.product.Product;
+import pavlina.EShop.domain.cart.Cart;
+import pavlina.EShop.domain.cart.CartDTO;
+import pavlina.EShop.domain.product.Product;
 import pavlina.EShop.exception_handling.exceptions.ProductNotFoundException;
 
 import java.util.List;
@@ -31,12 +33,13 @@ public class CartService {
     }
 
     public ResponseEntity<?> addToTheCart(int productId, HttpSession session) {
+        Cart cart = getOrCreateCart(session);
         Product productToAdd = productService.findProductById(productId);
-        if(productToAdd == null || productToAdd.getOrder() != null) {
+        if(productToAdd == null || !productToAdd.isAvailable()) {
             throw new ProductNotFoundException();
         }
-        Cart cart = getOrCreateCart(session);
         cart.addProduct(productToAdd);
+        productService.markProductAsReserved(productToAdd, session);
         return ResponseEntity.ok().body(String.format("Product: %s added to the cart.", productToAdd.getName()));
     }
 
@@ -55,8 +58,18 @@ public class CartService {
         return cart.getProductsInCart();
     }
 
+    public CartDTO getAllItemsAndTheirPrice(HttpSession session) {
+        Cart cart = getOrCreateCart(session);
+        return new CartDTO(cart.getProductsInCart(), cart.currentPriceOfProductsInCart());
+    }
+
     public void clearTheCart(HttpSession session) {
         Cart cart = getOrCreateCart(session);
         cart.clearTheCart();
+    }
+
+    @Scheduled(fixedRate = 60000)
+    public void clearTheCartDueToInactivity() {
+
     }
 }

@@ -1,7 +1,7 @@
-package pavlina.EShop.entities.cart;
+package pavlina.EShop.domain.cart;
 
 import lombok.Getter;
-import pavlina.EShop.entities.product.Product;
+import pavlina.EShop.domain.product.Product;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,5 +25,9 @@ public class Cart {
 
     public boolean containsProduct(Product product) {
         return productsInCart.contains(product);
+    }
+
+    public int currentPriceOfProductsInCart() {
+        return productsInCart.stream().mapToInt(Product::getPrice).sum();
     }
 }
