@@ -1,10 +1,10 @@
-package pavlina.EShop.controllers;
+package pavlina.EShop.controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pavlina.EShop.entities.order.Order;
-import pavlina.EShop.services.OrderService;
+import pavlina.EShop.domain.order.Order;
+import pavlina.EShop.service.OrderService;
 
 import java.time.LocalDate;
 

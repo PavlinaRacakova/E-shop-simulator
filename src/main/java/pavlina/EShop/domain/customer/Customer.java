@@ -1,4 +1,4 @@
-package pavlina.EShop.entities.customer;
+package pavlina.EShop.domain.customer;
 
 import jakarta.persistence.*;
 import lombok.Getter;

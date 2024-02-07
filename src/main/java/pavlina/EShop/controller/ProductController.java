@@ -1,12 +1,12 @@
-package pavlina.EShop.controllers;
+package pavlina.EShop.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import pavlina.EShop.entities.product.Product;
+import pavlina.EShop.domain.product.Product;
 import pavlina.EShop.exception_handling.exceptions.ValidationException;
-import pavlina.EShop.services.ProductService;
+import pavlina.EShop.service.ProductService;
 
 /**
  * Controller handling product related requests

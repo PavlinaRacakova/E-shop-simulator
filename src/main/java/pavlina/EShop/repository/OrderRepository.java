@@ -1,8 +1,8 @@
-package pavlina.EShop.repositories;
+package pavlina.EShop.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pavlina.EShop.entities.order.Order;
+import pavlina.EShop.domain.order.Order;
 
 import java.time.LocalDate;
 import java.util.List;

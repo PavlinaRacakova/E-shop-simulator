@@ -1,12 +1,12 @@
-package pavlina.EShop.services;
+package pavlina.EShop.service;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import pavlina.EShop.entities.order.Order;
-import pavlina.EShop.entities.product.Product;
+import pavlina.EShop.domain.order.Order;
+import pavlina.EShop.domain.product.Product;
 import pavlina.EShop.exception_handling.exceptions.DatabaseEmptyException;
 import pavlina.EShop.exception_handling.exceptions.ProductNotFoundException;
-import pavlina.EShop.repositories.ProductRepository;
+import pavlina.EShop.repository.ProductRepository;
 
 import java.util.List;
 

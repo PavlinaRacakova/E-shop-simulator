@@ -1,15 +1,15 @@
-package pavlina.EShop.services;
+package pavlina.EShop.service;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import pavlina.EShop.entities.order.CreatedOrderDTO;
-import pavlina.EShop.entities.order.Order;
-import pavlina.EShop.entities.product.Product;
+import pavlina.EShop.domain.order.CreatedOrderDTO;
+import pavlina.EShop.domain.order.Order;
+import pavlina.EShop.domain.product.Product;
 import pavlina.EShop.exception_handling.exceptions.CartEmptyException;
 import pavlina.EShop.exception_handling.exceptions.DatabaseEmptyException;
 import pavlina.EShop.exception_handling.exceptions.OrderNotFoundException;
-import pavlina.EShop.repositories.OrderRepository;
+import pavlina.EShop.repository.OrderRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -57,6 +57,6 @@ public class OrderService {
         repository.save(order);
         productService.markProductsAsSold(order, productsInCart);
         cartService.clearTheCart(session);
-        return ResponseEntity.ok().body(new CreatedOrderDTO(order.getOrderedProducts(), order.getTotalPrice()));
+        return ResponseEntity.ok().body(new CreatedOrderDTO(productsInCart, order.getTotalPrice()));
     }
 }

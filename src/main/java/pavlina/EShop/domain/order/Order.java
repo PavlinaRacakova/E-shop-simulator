@@ -1,11 +1,11 @@
-package pavlina.EShop.entities.order;
+package pavlina.EShop.domain.order;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import pavlina.EShop.entities.customer.Customer;
-import pavlina.EShop.entities.product.Product;
+import pavlina.EShop.domain.customer.Customer;
+import pavlina.EShop.domain.product.Product;
 
 import java.time.LocalDate;
 import java.util.List;

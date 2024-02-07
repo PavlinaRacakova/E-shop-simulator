@@ -1,8 +1,8 @@
-package pavlina.EShop.repositories;
+package pavlina.EShop.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pavlina.EShop.entities.product.Product;
+import pavlina.EShop.domain.product.Product;
 
 import java.util.List;
 

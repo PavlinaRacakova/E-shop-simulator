@@ -1,4 +1,4 @@
-package pavlina.EShop.entities.product;
+package pavlina.EShop.domain.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
-import pavlina.EShop.entities.order.Order;
+import pavlina.EShop.domain.order.Order;
 
 import java.util.Objects;
 
