@@ -1,7 +1,6 @@
 package pavlina.EShop.service;
 
 import jakarta.servlet.http.HttpSession;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import pavlina.EShop.domain.order.CreatedOrderDTO;
 import pavlina.EShop.domain.order.Order;
@@ -13,7 +12,6 @@ import pavlina.EShop.exception_handling.exceptions.OrderNotFoundException;
 import pavlina.EShop.repository.OrderRepository;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,24 +48,16 @@ public class OrderService {
         }
     }
 
-    public ResponseEntity<?> saveNewOrder(Order order, HttpSession session) {
+    public CreatedOrderDTO saveNewOrder(Order order, HttpSession session) {
         List<Product> productsInCart = cartService.getAllItemsInCart(session);
-        if(productsInCart.isEmpty()) {
+        if (productsInCart.isEmpty()) {
             throw new CartEmptyException();
         }
-        List<ProductDTO> productDTOs = createNewListOfProductDTOs(productsInCart);
+        List<ProductDTO> productDTOs = cartService.getAllItemsInCartDTO(session);
         order.setOrderedProducts(productsInCart);
         repository.save(order);
         productService.markProductsAsSold(order, productsInCart);
         cartService.clearTheCart(session);
-        return ResponseEntity.ok().body(new CreatedOrderDTO(productDTOs, order.getTotalPrice()));
-    }
-
-    private List<ProductDTO> createNewListOfProductDTOs(List<Product> productsInCart) {
-        List<ProductDTO> productDTOs = new ArrayList<>();
-        for(var product : productsInCart) {
-            productDTOs.add(new ProductDTO(product.getName(), product.getPrice()));
-        }
-        return productDTOs;
+        return new CreatedOrderDTO(productDTOs, order.getTotalPrice());
     }
 }

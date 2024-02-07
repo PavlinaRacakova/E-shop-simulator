@@ -51,6 +51,7 @@ public class ProductController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(new ValidationException(bindingResult));
         }
-        return service.saveNewProduct(product);
+        service.saveNewProduct(product);
+        return ResponseEntity.ok().build();
     }
 }

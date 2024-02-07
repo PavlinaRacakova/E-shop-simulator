@@ -18,18 +18,20 @@ public class CartController {
         this.service = service;
     }
 
-    @GetMapping("/add/{productId}")
+    @PostMapping("/add/{productId}")
     public ResponseEntity<?> addToCart(@PathVariable int productId, HttpSession session) {
-        return service.addToTheCart(productId, session);
+        service.addToTheCart(productId, session);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/delete/{productId}")
     public ResponseEntity<?> removeFromCart(@PathVariable int productId, HttpSession session) {
-        return service.removeFromTheCart(productId, session);
+        service.removeFromTheCart(productId, session);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/items")
     public ResponseEntity<?> getAllItemsInCart(HttpSession session) {
-        return ResponseEntity.ok().body(service.getAllItemsAndTheirPrice(session));
+        return ResponseEntity.ok().body(service.getAllItemsAndTheirPriceDTO(session));
     }
 }

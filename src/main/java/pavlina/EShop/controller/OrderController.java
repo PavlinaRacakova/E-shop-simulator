@@ -33,6 +33,6 @@ public class OrderController {
 
     @PostMapping("/add")
     public ResponseEntity<?> createNewOrder(@RequestBody Order order, HttpSession session) {
-        return service.saveNewOrder(order, session);
+        return ResponseEntity.ok().body(service.saveNewOrder(order, session));
     }
 }

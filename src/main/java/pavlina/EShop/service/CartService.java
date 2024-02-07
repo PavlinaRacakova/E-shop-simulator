@@ -1,12 +1,11 @@
 package pavlina.EShop.service;
 
 import jakarta.servlet.http.HttpSession;
-import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import pavlina.EShop.domain.cart.Cart;
 import pavlina.EShop.domain.cart.CartDTO;
 import pavlina.EShop.domain.product.Product;
+import pavlina.EShop.domain.product.ProductDTO;
 import pavlina.EShop.exception_handling.exceptions.ProductNotFoundException;
 
 import java.util.List;
@@ -32,25 +31,23 @@ public class CartService {
         return cart;
     }
 
-    public ResponseEntity<?> addToTheCart(int productId, HttpSession session) {
+    public void addToTheCart(int productId, HttpSession session) {
         Cart cart = getOrCreateCart(session);
         Product productToAdd = productService.findProductById(productId);
-        if(productToAdd == null || !productToAdd.isAvailable()) {
+        if (productToAdd == null || !productToAdd.isAvailable()) {
             throw new ProductNotFoundException();
         }
         cart.addProduct(productToAdd);
         productService.markProductAsReserved(productToAdd, session);
-        return ResponseEntity.ok().body(String.format("Product: %s added to the cart.", productToAdd.getName()));
     }
 
-    public ResponseEntity<?> removeFromTheCart(int productId, HttpSession session) {
-        Product productToRemove = productService.findProductById(productId);
+    public void removeFromTheCart(int productId, HttpSession session) {
         Cart cart = getOrCreateCart(session);
-        if(productToRemove == null || !(cart.containsProduct(productToRemove))) {
+        Product productToRemove = productService.findProductById(productId);
+        if (productToRemove == null || !(cart.containsProduct(productToRemove))) {
             throw new ProductNotFoundException();
         }
         cart.removeProduct(productToRemove);
-        return ResponseEntity.ok().body(String.format("Product: %s removed from the cart.", productToRemove.getName()));
     }
 
     public List<Product> getAllItemsInCart(HttpSession session) {
@@ -58,9 +55,14 @@ public class CartService {
         return cart.getProductsInCart();
     }
 
-    public CartDTO getAllItemsAndTheirPrice(HttpSession session) {
+    public List<ProductDTO> getAllItemsInCartDTO(HttpSession session) {
         Cart cart = getOrCreateCart(session);
-        return new CartDTO(cart.getProductsInCart(), cart.currentPriceOfProductsInCart());
+        return cart.getProductsInCartAsDTO();
+    }
+
+    public CartDTO getAllItemsAndTheirPriceDTO(HttpSession session) {
+        Cart cart = getOrCreateCart(session);
+        return new CartDTO(cart.getProductsInCartAsDTO(), cart.currentPriceOfProductsInCart());
     }
 
     public void clearTheCart(HttpSession session) {
@@ -68,8 +70,5 @@ public class CartService {
         cart.clearTheCart();
     }
 
-    @Scheduled(fixedRate = 60000)
-    public void clearTheCartDueToInactivity() {
 
-    }
 }

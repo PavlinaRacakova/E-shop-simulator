@@ -1,7 +1,6 @@
 package pavlina.EShop.service;
 
 import jakarta.servlet.http.HttpSession;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import pavlina.EShop.domain.order.Order;
 import pavlina.EShop.domain.product.Product;
@@ -42,7 +41,7 @@ public class ProductService {
     }
 
     public List<Product> findAllProductsMoreExpensiveThan(int price) {
-        List<Product> products =  repository.findByPriceGreaterThanEqual(price);
+        List<Product> products = repository.findByPriceGreaterThanEqual(price);
         if (!products.isEmpty()) {
             return products;
         } else {
@@ -56,7 +55,7 @@ public class ProductService {
     }
 
     public List<Product> findAllProductsThatArentSold() {
-        List<Product> products =   repository.findAllByOrderIsNullAndSessionIdIsNull();
+        List<Product> products = repository.findAllByOrderIsNullAndSessionIdIsNull();
         if (!products.isEmpty()) {
             return products;
         } else {
@@ -64,13 +63,12 @@ public class ProductService {
         }
     }
 
-    public ResponseEntity<?> saveNewProduct(Product product) {
+    public void saveNewProduct(Product product) {
         repository.save(product);
-        return ResponseEntity.ok().body("New product successfully added");
     }
 
     public void markProductsAsSold(Order order, List<Product> productsInCart) {
-        for(Product product : productsInCart) {
+        for (Product product : productsInCart) {
             product.setOrder(order);
             repository.save(product);
         }
@@ -84,7 +82,7 @@ public class ProductService {
     public void releaseProductsForExpiredSession(String sessionId) {
         List<Product> productsToMarkAsAvailable = repository.findBySessionId(sessionId);
 
-        for(Product productToMarkAsAvailable : productsToMarkAsAvailable) {
+        for (Product productToMarkAsAvailable : productsToMarkAsAvailable) {
             productToMarkAsAvailable.setSessionId(null);
             repository.save(productToMarkAsAvailable);
         }
