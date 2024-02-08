@@ -6,6 +6,8 @@ import pavlina.EShop.domain.cart.Cart;
 import pavlina.EShop.domain.cart.CartDTO;
 import pavlina.EShop.domain.product.Product;
 import pavlina.EShop.domain.product.ProductDTO;
+import pavlina.EShop.exception_handling.exceptions.CartEmptyException;
+import pavlina.EShop.exception_handling.exceptions.ProductNotAvailableException;
 import pavlina.EShop.exception_handling.exceptions.ProductNotFoundException;
 
 import java.util.List;
@@ -34,8 +36,10 @@ public class CartService {
     public void addToTheCart(int productId, HttpSession session) {
         Cart cart = getOrCreateCart(session);
         Product productToAdd = productService.findProductById(productId);
-        if (productToAdd == null || !productToAdd.isAvailable()) {
+        if (productToAdd == null) {
             throw new ProductNotFoundException();
+        } else if (!productToAdd.isAvailable()) {
+            throw new ProductNotAvailableException();
         }
         cart.addProduct(productToAdd);
         productService.markProductAsReserved(productToAdd, session);
@@ -47,16 +51,23 @@ public class CartService {
         if (productToRemove == null || !(cart.containsProduct(productToRemove))) {
             throw new ProductNotFoundException();
         }
+        productService.markProductAsAvailableAgain(productId);
         cart.removeProduct(productToRemove);
     }
 
     public List<Product> getAllItemsInCart(HttpSession session) {
         Cart cart = getOrCreateCart(session);
+        if (cart.getProductsInCart().isEmpty()) {
+            throw new CartEmptyException();
+        }
         return cart.getProductsInCart();
     }
 
     public List<ProductDTO> getAllItemsInCartDTO(HttpSession session) {
         Cart cart = getOrCreateCart(session);
+        if (cart.getProductsInCart().isEmpty()) {
+            throw new CartEmptyException();
+        }
         return cart.getProductsInCartAsDTO();
     }
 
@@ -69,6 +80,4 @@ public class CartService {
         Cart cart = getOrCreateCart(session);
         cart.clearTheCart();
     }
-
-
 }

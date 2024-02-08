@@ -24,29 +24,26 @@ public class ProductService {
 
     public List<Product> findAllProducts() {
         List<Product> products = repository.findAll();
-        if (!products.isEmpty()) {
-            return products;
-        } else {
+        if (products.isEmpty()) {
             throw new DatabaseEmptyException();
         }
+        return products;
     }
 
     public List<Product> findAllProductsCheaperThan(int price) {
         List<Product> products = repository.findByPriceLessThanEqual(price);
-        if (!products.isEmpty()) {
-            return products;
-        } else {
-            throw new ProductNotFoundException();
+        if (products.isEmpty()) {
+            throw new DatabaseEmptyException();
         }
+        return products;
     }
 
     public List<Product> findAllProductsMoreExpensiveThan(int price) {
         List<Product> products = repository.findByPriceGreaterThanEqual(price);
-        if (!products.isEmpty()) {
-            return products;
-        } else {
-            throw new ProductNotFoundException();
+        if (products.isEmpty()) {
+            throw new DatabaseEmptyException();
         }
+        return products;
     }
 
     public Product findProductById(int id) {
@@ -86,5 +83,12 @@ public class ProductService {
             productToMarkAsAvailable.setSessionId(null);
             repository.save(productToMarkAsAvailable);
         }
+    }
+
+    public void markProductAsAvailableAgain(int productId) {
+        Product productToBeMarkedAsAvailable = repository.findById(productId).orElseThrow(
+                ProductNotFoundException::new);
+        productToBeMarkedAsAvailable.setSessionId(null);
+        repository.save(productToBeMarkedAsAvailable);
     }
 }
