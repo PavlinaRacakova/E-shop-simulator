@@ -1,6 +1,10 @@
 package pavlina.EShop.domain.cart;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.Getter;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
 import pavlina.EShop.domain.product.Product;
 import pavlina.EShop.domain.product.ProductDTO;
 
@@ -8,9 +12,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Component
+@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class Cart {
 
-    private final List<Product> productsInCart = new ArrayList<>();
+    private final List<Product> productsInCart;
+    private final HttpSession httpSession;
+
+    public Cart(HttpSession httpSession) {
+        this.httpSession = httpSession;
+        productsInCart = new ArrayList<>();
+    }
 
     public void addProduct(Product product) {
         productsInCart.add(product);

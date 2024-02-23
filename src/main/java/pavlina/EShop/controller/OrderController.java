@@ -1,6 +1,5 @@
 package pavlina.EShop.controller;
 
-import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pavlina.EShop.domain.order.Order;
@@ -32,7 +31,7 @@ public class OrderController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> createNewOrder(@RequestBody Order order, HttpSession session) {
-        return ResponseEntity.ok().body(service.saveNewOrder(order, session));
+    public ResponseEntity<?> createNewOrder(@RequestBody Order order) {
+        return ResponseEntity.ok().body(service.saveNewOrder(order));
     }
 }

@@ -1,6 +1,5 @@
 package pavlina.EShop.controller;
 
-import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pavlina.EShop.service.CartService;
@@ -19,19 +18,19 @@ public class CartController {
     }
 
     @PostMapping("/add/{productId}")
-    public ResponseEntity<?> addToCart(@PathVariable int productId, HttpSession session) {
-        service.addToTheCart(productId, session);
+    public ResponseEntity<?> addToCart(@PathVariable int productId) {
+        service.addToTheCart(productId);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/delete/{productId}")
-    public ResponseEntity<?> removeFromCart(@PathVariable int productId, HttpSession session) {
-        service.removeFromTheCart(productId, session);
+    public ResponseEntity<?> removeFromCart(@PathVariable int productId) {
+        service.removeFromTheCart(productId);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/items")
-    public ResponseEntity<?> getAllItemsInCart(HttpSession session) {
-        return ResponseEntity.ok().body(service.getAllItemsAndTheirPriceDTO(session));
+    public ResponseEntity<?> getAllItemsInCart() {
+        return ResponseEntity.ok().body(service.getAllItemsAndTheirPriceDTO());
     }
 }

@@ -1,6 +1,5 @@
 package pavlina.EShop.service;
 
-import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 import pavlina.EShop.domain.cart.Cart;
 import pavlina.EShop.domain.cart.CartDTO;
@@ -19,22 +18,14 @@ import java.util.List;
 public class CartService {
 
     private final ProductService productService;
+    private final Cart cart;
 
-    public CartService(ProductService productService) {
+    public CartService(ProductService productService, Cart cart) {
         this.productService = productService;
+        this.cart = cart;
     }
 
-    private Cart getOrCreateCart(HttpSession session) {
-        Cart cart = (Cart) session.getAttribute("cart");
-        if (cart == null) {
-            cart = new Cart();
-            session.setAttribute("cart", cart);
-        }
-        return cart;
-    }
-
-    public void addToTheCart(int productId, HttpSession session) {
-        Cart cart = getOrCreateCart(session);
+    public void addToTheCart(int productId) {
         Product productToAdd = productService.findProductById(productId);
         if (productToAdd == null) {
             throw new ProductNotFoundException();
@@ -42,11 +33,10 @@ public class CartService {
             throw new ProductNotAvailableException();
         }
         cart.addProduct(productToAdd);
-        productService.markProductAsReserved(productToAdd, session);
+        productService.markProductAsReserved(productToAdd, cart.getHttpSession());
     }
 
-    public void removeFromTheCart(int productId, HttpSession session) {
-        Cart cart = getOrCreateCart(session);
+    public void removeFromTheCart(int productId) {
         Product productToRemove = productService.findProductById(productId);
         if (productToRemove == null || !(cart.containsProduct(productToRemove))) {
             throw new ProductNotFoundException();
@@ -55,29 +45,25 @@ public class CartService {
         cart.removeProduct(productToRemove);
     }
 
-    public List<Product> getAllItemsInCart(HttpSession session) {
-        Cart cart = getOrCreateCart(session);
+    public List<Product> getAllItemsInCart() {
         if (cart.getProductsInCart().isEmpty()) {
             throw new CartEmptyException();
         }
         return cart.getProductsInCart();
     }
 
-    public List<ProductDTO> getAllItemsInCartDTO(HttpSession session) {
-        Cart cart = getOrCreateCart(session);
+    public List<ProductDTO> getAllItemsInCartDTO() {
         if (cart.getProductsInCart().isEmpty()) {
             throw new CartEmptyException();
         }
         return cart.getProductsInCartAsDTO();
     }
 
-    public CartDTO getAllItemsAndTheirPriceDTO(HttpSession session) {
-        Cart cart = getOrCreateCart(session);
+    public CartDTO getAllItemsAndTheirPriceDTO() {
         return new CartDTO(cart.getProductsInCartAsDTO(), cart.currentPriceOfProductsInCart());
     }
 
-    public void clearTheCart(HttpSession session) {
-        Cart cart = getOrCreateCart(session);
+    public void clearTheCart() {
         cart.clearTheCart();
     }
 }
