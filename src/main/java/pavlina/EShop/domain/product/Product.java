@@ -29,7 +29,7 @@ public class Product {
     @Length(max = 25, message = "Name of the product is too long")
     private String name;
 
-    @Min(value = 1, message = "Price cannot be negative")
+    @Min(value = 0, message = "Price cannot be negative")
     @Max(value = 1_000_000, message = "Price cannot be higher than 1.000.000")
     private int price;
 
