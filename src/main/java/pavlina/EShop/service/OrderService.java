@@ -4,8 +4,6 @@ import org.springframework.stereotype.Service;
 import pavlina.EShop.domain.order.CreatedOrderDTO;
 import pavlina.EShop.domain.order.Order;
 import pavlina.EShop.domain.product.Product;
-import pavlina.EShop.domain.product.ProductDTO;
-import pavlina.EShop.exception_handling.exceptions.CartEmptyException;
 import pavlina.EShop.exception_handling.exceptions.DatabaseEmptyException;
 import pavlina.EShop.exception_handling.exceptions.OrderNotFoundException;
 import pavlina.EShop.repository.OrderRepository;
@@ -49,14 +47,9 @@ public class OrderService {
 
     public CreatedOrderDTO saveNewOrder(Order order) {
         List<Product> productsInCart = cartService.getAllItemsInCart();
-        if (productsInCart.isEmpty()) {
-            throw new CartEmptyException();
-        }
-        List<ProductDTO> productDTOs = cartService.getAllItemsInCartDTO();
         order.setOrderedProducts(productsInCart);
         repository.save(order);
         productService.markProductsAsSold(order, productsInCart);
-        cartService.clearTheCart();
-        return new CreatedOrderDTO(productDTOs, order.getTotalPrice());
+        return new CreatedOrderDTO(cartService.clearTheCartDueToFinishedOrder(), order.getTotalPrice());
     }
 }

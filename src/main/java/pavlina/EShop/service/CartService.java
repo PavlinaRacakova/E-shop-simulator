@@ -52,18 +52,16 @@ public class CartService {
         return cart.getProductsInCart();
     }
 
-    public List<ProductDTO> getAllItemsInCartDTO() {
-        if (cart.getProductsInCart().isEmpty()) {
+    public List<ProductDTO> clearTheCartDueToFinishedOrder() {
+        List<ProductDTO> productDTOs = cart.getProductsInCartAsDTO();
+        if (productDTOs.isEmpty()) {
             throw new CartEmptyException();
         }
-        return cart.getProductsInCartAsDTO();
+        cart.clearTheCart();
+        return productDTOs;
     }
 
     public CartDTO getAllItemsAndTheirPriceDTO() {
         return new CartDTO(cart.getProductsInCartAsDTO(), cart.currentPriceOfProductsInCart());
-    }
-
-    public void clearTheCart() {
-        cart.clearTheCart();
     }
 }
