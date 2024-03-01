@@ -1,4 +1,4 @@
-package pavlina.EShop.service_tests;
+package pavlina.EShop.service;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,9 +13,6 @@ import pavlina.EShop.domain.product.ProductDTO;
 import pavlina.EShop.exception_handling.exceptions.DatabaseEmptyException;
 import pavlina.EShop.exception_handling.exceptions.OrderNotFoundException;
 import pavlina.EShop.repository.OrderRepository;
-import pavlina.EShop.service.CartService;
-import pavlina.EShop.service.OrderService;
-import pavlina.EShop.service.ProductService;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -1,4 +1,4 @@
-package pavlina.EShop.service_tests;
+package pavlina.EShop.service;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,7 +11,6 @@ import pavlina.EShop.domain.product.Product;
 import pavlina.EShop.exception_handling.exceptions.DatabaseEmptyException;
 import pavlina.EShop.exception_handling.exceptions.ProductNotFoundException;
 import pavlina.EShop.repository.ProductRepository;
-import pavlina.EShop.service.ProductService;
 
 import java.util.List;
 import java.util.Optional;

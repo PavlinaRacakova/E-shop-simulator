@@ -1,11 +1,10 @@
-package pavlina.EShop.repository_tests;
+package pavlina.EShop.repository;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import pavlina.EShop.domain.order.Order;
-import pavlina.EShop.repository.OrderRepository;
 
 import java.time.LocalDate;
 import java.util.List;
