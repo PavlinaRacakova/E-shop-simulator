@@ -27,9 +27,7 @@ public class CartService {
 
     public void addToTheCart(int productId) {
         Product productToAdd = productService.findProductById(productId);
-        if (productToAdd == null) {
-            throw new ProductNotFoundException();
-        } else if (!productToAdd.isAvailable()) {
+        if (!productToAdd.isAvailable()) {
             throw new ProductNotAvailableException();
         }
         cart.addProduct(productToAdd);
@@ -38,7 +36,7 @@ public class CartService {
 
     public void removeFromTheCart(int productId) {
         Product productToRemove = productService.findProductById(productId);
-        if (productToRemove == null || !(cart.containsProduct(productToRemove))) {
+        if (!cart.containsProduct(productToRemove)) {
             throw new ProductNotFoundException();
         }
         productService.markProductAsAvailableAgain(productId);
@@ -52,16 +50,17 @@ public class CartService {
         return cart.getProductsInCart();
     }
 
-    public List<ProductDTO> clearTheCartDueToFinishedOrder() {
+    public CartDTO getAllItemsAndTheirPriceDTO() {
         List<ProductDTO> productDTOs = cart.getProductsInCartAsDTO();
         if (productDTOs.isEmpty()) {
             throw new CartEmptyException();
         }
-        cart.clearTheCart();
-        return productDTOs;
+        return new CartDTO(productDTOs, cart.currentPriceOfProductsInCart());
     }
 
-    public CartDTO getAllItemsAndTheirPriceDTO() {
-        return new CartDTO(cart.getProductsInCartAsDTO(), cart.currentPriceOfProductsInCart());
+    public List<ProductDTO> clearTheCartDueToFinishedOrder() {
+        List<ProductDTO> productDTOs = cart.getProductsInCartAsDTO();
+        cart.clearTheCart();
+        return productDTOs;
     }
 }
