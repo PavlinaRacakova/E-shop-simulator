@@ -81,7 +81,7 @@ class ProductServiceTest {
 
         //assert
         assertThatThrownBy(() -> serviceUnderTest.findAllProductsCheaperThan(priceToFind))
-                .isInstanceOf(DatabaseEmptyException.class);
+                .isInstanceOf(ProductNotFoundException.class);
     }
 
     @Test
@@ -109,7 +109,7 @@ class ProductServiceTest {
 
         //assert
         assertThatThrownBy(() -> serviceUnderTest.findAllProductsMoreExpensiveThan(priceToFind))
-                .isInstanceOf(DatabaseEmptyException.class);
+                .isInstanceOf(ProductNotFoundException.class);
     }
 
     @Test
