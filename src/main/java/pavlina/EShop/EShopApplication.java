@@ -2,11 +2,11 @@ package pavlina.EShop;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
-@SpringBootApplication(exclude= {UserDetailsServiceAutoConfiguration.class})
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 public class EShopApplication {
 
     public static void main(String[] args) {

@@ -27,6 +27,10 @@ public class OrderService {
         this.productService = productService;
     }
 
+    public Order findById(int id) {
+        return repository.findById(id).orElseThrow(OrderNotFoundException::new);
+    }
+
     public List<Order> findAllOrders() {
         List<Order> orders = repository.findAll();
         if (!orders.isEmpty()) {

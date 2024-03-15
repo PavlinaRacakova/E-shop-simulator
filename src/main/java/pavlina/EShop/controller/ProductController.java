@@ -4,9 +4,12 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pavlina.EShop.domain.product.Product;
 import pavlina.EShop.exception_handling.exceptions.ValidationException;
 import pavlina.EShop.service.ProductService;
+
+import java.net.URI;
 
 /**
  * Controller handling product related requests
@@ -52,6 +55,8 @@ public class ProductController {
             return ResponseEntity.badRequest().body(new ValidationException(bindingResult));
         }
         service.saveNewProduct(product);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.created(URI.create(
+                        String.format("%s%s%s", ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString(), "/products/", product.getId())))
+                .build();
     }
 }

@@ -2,6 +2,7 @@ package pavlina.EShop.service;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriBuilder;
 import pavlina.EShop.domain.order.Order;
 import pavlina.EShop.domain.product.Product;
 import pavlina.EShop.exception_handling.exceptions.DatabaseEmptyException;
@@ -33,7 +34,7 @@ public class ProductService {
     public List<Product> findAllProductsCheaperThan(int price) {
         List<Product> products = repository.findByPriceLessThanEqual(price);
         if (products.isEmpty()) {
-            throw new DatabaseEmptyException();
+            throw new ProductNotFoundException();
         }
         return products;
     }
@@ -41,7 +42,7 @@ public class ProductService {
     public List<Product> findAllProductsMoreExpensiveThan(int price) {
         List<Product> products = repository.findByPriceGreaterThanEqual(price);
         if (products.isEmpty()) {
-            throw new DatabaseEmptyException();
+            throw new ProductNotFoundException();
         }
         return products;
     }
