@@ -41,17 +41,22 @@ public class CartServiceTest {
         //arrange
         ArgumentCaptor<Product> argumentCaptor = ArgumentCaptor.forClass(Product.class);
         Product product = new Product();
+        ProductDTO productDTO;
+        ProductDTO result;
         int id = 1;
 
         //act
         product.setId(id);
+        product.setName("mockProduct");
+        productDTO = new ProductDTO(product.getName(), product.getPrice());
         when(productService.findProductById(id)).thenReturn(product);
-        serviceUnderTest.addToTheCart(id);
+        result = serviceUnderTest.addToTheCart(id);
 
         //assert
         verify(cart).addProduct(argumentCaptor.capture());
         assertThat(argumentCaptor.getValue().getId())
                 .isEqualTo(id);
+        assertThat(result).isEqualTo(productDTO);
         verify(productService).markProductAsReserved(product, cart.getHttpSession());
     }
 
@@ -77,18 +82,24 @@ public class CartServiceTest {
         ArgumentCaptor<Product> argumentCaptor = ArgumentCaptor.forClass(Product.class);
         Product productToRemove = new Product();
         int id = 1;
+        ProductDTO productDTO;
+        ProductDTO result;
 
         //act
         productToRemove.setId(id);
+        productToRemove.setId(id);
+        productToRemove.setName("mockProduct");
+        productDTO = new ProductDTO(productToRemove.getName(), productToRemove.getPrice());
         when(productService.findProductById(id)).thenReturn(productToRemove);
         when(cart.containsProduct(productToRemove)).thenReturn(true);
-        serviceUnderTest.removeFromTheCart(id);
+        result = serviceUnderTest.removeFromTheCart(id);
 
         //assert
         verify(productService).markProductAsAvailableAgain(productToRemove.getId());
         verify(cart).removeProduct(argumentCaptor.capture());
         assertThat(argumentCaptor.getValue().getId())
                 .isEqualTo(id);
+        assertThat(result).isEqualTo(productDTO);
     }
 
     @Test
