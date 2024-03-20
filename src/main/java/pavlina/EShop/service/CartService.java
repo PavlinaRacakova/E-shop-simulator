@@ -25,22 +25,24 @@ public class CartService {
         this.cart = cart;
     }
 
-    public void addToTheCart(int productId) {
+    public ProductDTO addToTheCart(int productId) {
         Product productToAdd = productService.findProductById(productId);
         if (!productToAdd.isAvailable()) {
             throw new ProductNotAvailableException();
         }
         cart.addProduct(productToAdd);
         productService.markProductAsReserved(productToAdd, cart.getHttpSession());
+        return new ProductDTO(productToAdd.getName(), productToAdd.getPrice());
     }
 
-    public void removeFromTheCart(int productId) {
+    public ProductDTO removeFromTheCart(int productId) {
         Product productToRemove = productService.findProductById(productId);
         if (!cart.containsProduct(productToRemove)) {
             throw new ProductNotFoundException();
         }
         productService.markProductAsAvailableAgain(productId);
         cart.removeProduct(productToRemove);
+        return new ProductDTO(productToRemove.getName(), productToRemove.getPrice());
     }
 
     public List<Product> getAllItemsInCart() {

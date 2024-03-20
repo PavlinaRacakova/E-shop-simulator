@@ -2,6 +2,7 @@ package pavlina.EShop.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pavlina.EShop.domain.product.ProductDTO;
 import pavlina.EShop.service.CartService;
 
 /**
@@ -19,14 +20,14 @@ public class CartController {
 
     @PostMapping("/add/{productId}")
     public ResponseEntity<?> addToCart(@PathVariable int productId) {
-        service.addToTheCart(productId);
-        return ResponseEntity.ok().build();
+        ProductDTO addedProduct = service.addToTheCart(productId);
+        return ResponseEntity.ok().body(addedProduct);
     }
 
     @DeleteMapping("/delete/{productId}")
     public ResponseEntity<?> removeFromCart(@PathVariable int productId) {
-        service.removeFromTheCart(productId);
-        return ResponseEntity.noContent().build();
+        ProductDTO removedProduct = service.removeFromTheCart(productId);
+        return ResponseEntity.ok().body(removedProduct);
     }
 
     @GetMapping("/items")
