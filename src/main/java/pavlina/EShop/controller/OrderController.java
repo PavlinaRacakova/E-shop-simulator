@@ -1,10 +1,13 @@
 package pavlina.EShop.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pavlina.EShop.domain.order.CreatedOrderDTO;
 import pavlina.EShop.domain.order.Order;
+import pavlina.EShop.exception_handling.exceptions.ValidationException;
 import pavlina.EShop.service.OrderService;
 
 import java.net.URI;
@@ -39,7 +42,10 @@ public class OrderController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> createNewOrder(@RequestBody Order order) {
+    public ResponseEntity<?> createNewOrder(@RequestBody @Valid Order order, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(new ValidationException(bindingResult));
+        }
         CreatedOrderDTO createdOrder = service.saveNewOrder(order);
         return ResponseEntity.created(URI.create(
                         String.format("%s%s%s", ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString(), "/orders/", order.getId())))
