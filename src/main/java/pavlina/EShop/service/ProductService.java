@@ -2,7 +2,6 @@ package pavlina.EShop.service;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriBuilder;
 import pavlina.EShop.domain.order.Order;
 import pavlina.EShop.domain.product.Product;
 import pavlina.EShop.exception_handling.exceptions.DatabaseEmptyException;
@@ -68,6 +67,7 @@ public class ProductService {
     public void markProductsAsSold(Order order, List<Product> productsInCart) {
         for (Product product : productsInCart) {
             product.setOrder(order);
+            product.setSessionId(null);
             repository.save(product);
         }
     }
