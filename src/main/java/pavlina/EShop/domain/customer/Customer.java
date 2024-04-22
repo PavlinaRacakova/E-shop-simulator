@@ -3,9 +3,11 @@ package pavlina.EShop.domain.customer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.Setter;
 
 @Embeddable
 @Getter
+@Setter
 public class Customer {
 
     @NotNull
