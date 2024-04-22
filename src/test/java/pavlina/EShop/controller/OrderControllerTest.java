@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
+import pavlina.EShop.domain.customer.Customer;
 import pavlina.EShop.domain.order.CreatedOrderDTO;
 import pavlina.EShop.domain.order.Order;
 import pavlina.EShop.domain.product.Product;
@@ -27,6 +28,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
@@ -199,7 +201,31 @@ public class OrderControllerTest {
     }
 
     @Test
-    public void whenInvalidOrdersIsGivenToSaveIntoDatabase_thenReturnErrorMessage() throws Exception {
+    public void whenNotAllOrderFieldsAreValidAndThereforeOrderCannotBeSaved_thenReturnValidationException() throws Exception {
+        //arrange
+        MockHttpServletResponse result;
+        Customer customer = new Customer();
+        Product product = new Product();
+
+        //act
+        customer.setName("jack");
+        order.setCustomer(customer);
+        order.setOrderedProducts(List.of(product));
+        result = mockMvc.perform(
+                        post("/orders/add")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(order)))
+                .andReturn().getResponse();
+
+        //assert
+        verify(service, never()).saveNewOrder(order);
+        assertThat(result.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(result.getContentAsString())
+                .isEqualTo("{\"validation_errors\":{\"customer.email\":\"must not be null\",\"customer.address\":\"must not be null\"}}");
+    }
+
+    @Test
+    public void whenCartIsEmptyAndThereforeNewOrderCannotBeSaved_thenReturnErrorMessage() throws Exception {
         //arrange
         MockHttpServletResponse result;
         CartEmptyException cartEmptyException = new CartEmptyException();
